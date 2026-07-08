@@ -34,9 +34,10 @@ function buildApp() {
   fastify.register(authPlugin);
 
   // ── 路由 ──────────────────────────────────────────────────────────
-  fastify.register(require('./routes/auth'),      { prefix: '/api/auth' });
-  fastify.register(require('./routes/questions'), { prefix: '/api/questions' });
-  fastify.register(require('./routes/sessions'),  { prefix: '/api/sessions' });
+  fastify.register(require('./routes/auth'),         { prefix: '/api/auth' });
+  fastify.register(require('./routes/questions'),    { prefix: '/api/questions' });
+  fastify.register(require('./routes/sessions'),     { prefix: '/api/sessions' });
+  fastify.register(require('./routes/admin/users'),  { prefix: '/api/admin/users' });
 
   // ── 健康检查 ──────────────────────────────────────────────────────
   fastify.get('/health', async () => ({ status: 'ok', timestamp: new Date().toISOString() }));
