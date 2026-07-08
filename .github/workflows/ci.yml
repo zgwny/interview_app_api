@@ -1,0 +1,33 @@
+# PR / 非 main 分支：只做语法检查，不推镜像
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches-ignore: [main]
+
+jobs:
+  lint:
+    name: Syntax Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Check JS syntax
+        run: |
+          find src -name '*.js' | xargs -I{} node --check {}
+          echo "✅ Syntax OK"
+
+      - name: Docker build smoke test (no push)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
