@@ -6,6 +6,6 @@ node_modules
 .DS_Store
 _fix_auth.py
 seed
-.npmrc
+# .npmrc 需要保留（项目级配置指向公共 registry，Docker 构建需要它）
 .yarnrc
 .yarnrc.yml
