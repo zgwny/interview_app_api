@@ -6,3 +6,6 @@ node_modules
 .DS_Store
 _fix_auth.py
 seed
+.npmrc
+.yarnrc
+.yarnrc.yml
