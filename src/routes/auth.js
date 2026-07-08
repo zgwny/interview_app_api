@@ -6,7 +6,7 @@ const UserService = require('../services/UserService');
 async function register(request, reply) {
   const { username, email, password } = request.body;
   const user = await UserService.register({ username, email, password });
-  return reply.code(201).send({ data: user });
+  return reply.code(201).send({  user });
 }
 
 /** POST /api/auth/login */
@@ -25,7 +25,8 @@ async function login(request, reply) {
 /** GET /api/auth/me — 获取当前登录用户信息 */
 async function me(request, reply) {
   const user = await UserService.getById(request.user.id);
-  return reply.send({ data: user.toPublic() });
+  // getById 已内部调用 toPublic()，直接返回 plain object
+  return reply.send({  user });
 }
 
 module.exports = async function authRoutes(fastify) {
