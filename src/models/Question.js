@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 
-const CATEGORIES = ['javascript', 'typescript', 'css', 'html', 'react', 'vue', 'node', 'network', 'algorithm', 'other'];
+const CATEGORIES = ['javascript', 'typescript', 'css', 'html', 'react', 'vue', 'node', 'network', 'algorithm', 'sql', 'devops', 'other'];
 const DIFFICULTIES = ['easy', 'medium', 'hard'];
 
 const questionSchema = new mongoose.Schema(
