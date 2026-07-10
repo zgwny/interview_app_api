@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const config = require('../src/config');
 const User = require('../src/models/User');
 const Question = require('../src/models/Question');
+const Category = require('../src/models/Category');
 
 // ── 初始题目数据（answer 用模板字面量，避免反引号转义问题）─────────
 const QUESTIONS = [
@@ -201,6 +202,34 @@ async function seed() {
   } else {
     console.log(`ℹ️  管理员账号已存在: ${admin.username}，跳过`);
   }
+
+  // ── 写入初始分类（跳过已存在的）──────────────────────────────────
+  const DEFAULT_CATEGORIES = [
+    { name: 'javascript', label: 'JavaScript', color: '#f5a623', sort: 1 },
+    { name: 'typescript', label: 'TypeScript', color: '#1677ff', sort: 2 },
+    { name: 'css',        label: 'CSS',        color: '#13c2c2', sort: 3 },
+    { name: 'html',       label: 'HTML',       color: '#87d068', sort: 4 },
+    { name: 'react',      label: 'React',      color: '#61dafb', sort: 5 },
+    { name: 'vue',        label: 'Vue',        color: '#42b883', sort: 6 },
+    { name: 'node',       label: 'Node.js',    color: '#722ed1', sort: 7 },
+    { name: 'network',    label: '计算机网络', color: '#eb2f96', sort: 8 },
+    { name: 'algorithm',  label: '算法',       color: '#fa541c', sort: 9 },
+    { name: 'sql',        label: 'SQL',        color: '#fa8c16', sort: 10 },
+    { name: 'devops',     label: 'DevOps',     color: '#13c2c2', sort: 11 },
+    { name: 'java',       label: 'Java',       color: '#e76f00', sort: 12 },
+    { name: 'python',     label: 'Python',     color: '#3776ab', sort: 13 },
+    { name: 'go',         label: 'Go',         color: '#00acd7', sort: 14 },
+    { name: 'other',      label: '其他',       color: '#8c8c8c', sort: 99 },
+  ];
+  let catCreated = 0;
+  for (const c of DEFAULT_CATEGORIES) {
+    const exists = await Category.findOne({ name: c.name });
+    if (!exists) {
+      await Category.create(c);
+      catCreated++;
+    }
+  }
+  console.log(`✅ 分类 Seed 完成：新增 ${catCreated} 个分类（已存在的跳过）`);
 
   // ── 写入题目（跳过已存在的标题）───────────────────────────────────
   let created = 0;

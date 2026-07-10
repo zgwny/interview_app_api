@@ -2,7 +2,7 @@
 
 const QuestionService = require('../services/QuestionService');
 const UserService = require('../services/UserService');
-const { CATEGORIES, DIFFICULTIES } = require('../models/Question');
+const { DIFFICULTIES } = require('../models/Question');
 
 module.exports = async function questionRoutes(fastify) {
   /** GET /api/questions — 分页列表 */
@@ -12,7 +12,7 @@ module.exports = async function questionRoutes(fastify) {
       querystring: {
         type: 'object',
         properties: {
-          category:   { type: 'string', enum: CATEGORIES },
+          category:   { type: 'string' },          // 动态分类，不再 enum 校验
           difficulty: { type: 'string', enum: DIFFICULTIES },
           tag:        { type: 'string' },
           keyword:    { type: 'string' },
@@ -33,7 +33,7 @@ module.exports = async function questionRoutes(fastify) {
     preHandler: [fastify.optionalAuth],
     async handler(request, reply) {
       const question = await QuestionService.getById(request.params.id);
-      return reply.send({ data: question });
+      return reply.send({  question });
     },
   });
 
@@ -48,7 +48,7 @@ module.exports = async function questionRoutes(fastify) {
           title:      { type: 'string', minLength: 2, maxLength: 200 },
           content:    { type: 'string', minLength: 1 },
           answer:     { type: 'string', minLength: 1 },
-          category:   { type: 'string', enum: CATEGORIES },
+          category:   { type: 'string', minLength: 1, maxLength: 30 },
           difficulty: { type: 'string', enum: DIFFICULTIES },
           tags:       { type: 'array', items: { type: 'string' }, maxItems: 10 },
         },
@@ -70,7 +70,7 @@ module.exports = async function questionRoutes(fastify) {
           title:      { type: 'string', minLength: 2, maxLength: 200 },
           content:    { type: 'string', minLength: 1 },
           answer:     { type: 'string', minLength: 1 },
-          category:   { type: 'string', enum: CATEGORIES },
+          category:   { type: 'string', minLength: 1, maxLength: 30 },
           difficulty: { type: 'string', enum: DIFFICULTIES },
           tags:       { type: 'array', items: { type: 'string' }, maxItems: 10 },
         },

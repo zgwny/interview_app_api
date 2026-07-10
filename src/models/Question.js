@@ -2,7 +2,8 @@
 
 const mongoose = require('mongoose');
 
-const CATEGORIES = ['javascript', 'typescript', 'css', 'html', 'react', 'vue', 'node', 'network', 'algorithm', 'sql', 'devops', 'other'];
+// CATEGORIES 现在从数据库动态获取，此处保留默认值供 seed 使用
+const CATEGORIES = ['javascript', 'typescript', 'css', 'html', 'react', 'vue', 'node', 'network', 'algorithm', 'sql', 'devops', 'java', 'python', 'go', 'other'];
 const DIFFICULTIES = ['easy', 'medium', 'hard'];
 
 const questionSchema = new mongoose.Schema(
@@ -26,8 +27,9 @@ const questionSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: CATEGORIES,
       required: true,
+      trim: true,
+      lowercase: true,
     },
     difficulty: {
       type: String,
